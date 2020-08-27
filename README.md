@@ -1,0 +1,1 @@
+# gulp-jimp-wrapper

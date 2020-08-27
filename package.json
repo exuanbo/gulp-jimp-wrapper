@@ -1,0 +1,39 @@
+{
+  "name": "gulp-jimp-wrapper",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "module": "index.es.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha",
+    "pretest": "rollup -c",
+    "build": "rimraf index.es.js && npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/exuanbo/gulp-jimp-wrapper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/exuanbo/gulp-jimp-wrapper/issues"
+  },
+  "homepage": "https://github.com/exuanbo/gulp-jimp-wrapper#readme",
+  "dependencies": {
+    "jimp": "^0.16.0",
+    "plugin-error": "^1.0.1",
+    "through2": "^4.0.2"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^15.0.0",
+    "chai": "^4.2.0",
+    "mocha": "^8.1.2",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.26.6",
+    "vinyl": "^2.2.0"
+  }
+}
