@@ -35,10 +35,21 @@ const compare = (stream, fixtureName, expectedName, done, expectedErr) => {
 
 describe('gulp-jimp-wrapper', () => {
   it('works for me', done => {
-    compare(jimp(img => img.invert()), 'original.jpg', 'invert.jpg', done)
+    compare(
+      jimp(img => img.invert()),
+      'original.jpg',
+      'invert.jpg',
+      done
+    )
   })
 
   it('throws an error', done => {
-    compare(jimp('img => img.invert()'), 'original.jpg', 'invert.jpg', done, 'Argument img => img.invert() is not a function')
+    compare(
+      jimp('img => img.invert()'),
+      'original.jpg',
+      'invert.jpg',
+      done,
+      'Argument img => img.invert() is not a function'
+    )
   })
 })

@@ -15,16 +15,20 @@ const supportedMimetypes = {
   gif: 'image/gif'
 }
 
-const processImg = (img, cb) => new Promise((resolve, reject) => {
-  const extension = path.extname(img.path).split('.').pop()
+const processImg = (img, cb) =>
+  new Promise((resolve, reject) => {
+    const extension = path
+      .extname(img.path)
+      .split('.')
+      .pop()
 
-  jimp
-    .read(img.contents)
-    .then(cb)
-    .then(img => img.getBufferAsync(supportedMimetypes[extension]))
-    .then(newImgContents => resolve(newImgContents))
-    .catch(err => reject(err))
-})
+    jimp
+      .read(img.contents)
+      .then(cb)
+      .then(img => img.getBufferAsync(supportedMimetypes[extension]))
+      .then(data => resolve(data))
+      .catch(err => reject(err))
+  })
 
 const jimpWrapper = cb => {
   return through.obj(async (img, _, callback) => {
@@ -37,12 +41,14 @@ const jimpWrapper = cb => {
         return callback(new PluginError(PLUGIN_NAME, 'Streaming not supported'))
       }
 
-      if (typeof(cb) !== 'function') {
-        return callback(new PluginError(PLUGIN_NAME, `Argument ${cb} is not a function`))
+      if (typeof cb !== 'function') {
+        return callback(
+          new PluginError(PLUGIN_NAME, `Argument ${cb} is not a function`)
+        )
       }
 
-      const newImgContents = await processImg(img, cb)
-      img.contents = Buffer.from(newImgContents)
+      const data = await processImg(img, cb)
+      img.contents = Buffer.from(data)
       callback(null, img)
     } catch (err) {
       callback(new PluginError(PLUGIN_NAME, err))
