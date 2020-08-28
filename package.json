@@ -23,6 +23,7 @@
     "gulp",
     "gulp-jimp",
     "jimp",
+    "gulp-image",
     "image"
   ],
   "author": {
