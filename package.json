@@ -1,7 +1,7 @@
 {
   "name": "gulp-jimp-wrapper",
   "version": "0.0.0",
-  "description": "",
+  "description": "Manipulates images using Jimp.",
   "main": "index.js",
   "module": "index.es.js",
   "directories": {
@@ -16,8 +16,17 @@
     "type": "git",
     "url": "git+https://github.com/exuanbo/gulp-jimp-wrapper.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "gulpplugin",
+    "gulp",
+    "gulp-jimp",
+    "jimp",
+    "image"
+  ],
+  "author": {
+    "name": "exuanbo",
+    "email": "exuanbo@protonmail.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/exuanbo/gulp-jimp-wrapper/issues"
