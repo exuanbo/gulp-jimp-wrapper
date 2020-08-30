@@ -31,28 +31,30 @@ const processImg = (img, cb) =>
   })
 
 const jimpWrapper = cb => {
-  return through.obj(async (img, _, callback) => {
-    try {
-      if (img.isNull()) {
-        return callback(null, img)
-      }
-
-      if (img.isStream()) {
-        return callback(new PluginError(PLUGIN_NAME, 'Streaming not supported'))
-      }
-
-      if (typeof cb !== 'function') {
-        return callback(
-          new PluginError(PLUGIN_NAME, `Argument '${cb}' is not a function`)
-        )
-      }
-
-      const data = await processImg(img, cb)
-      img.contents = Buffer.from(data)
-      callback(null, img)
-    } catch (err) {
-      callback(new PluginError(PLUGIN_NAME, err))
+  return through.obj((img, _, callback) => {
+    if (img.isNull()) {
+      return callback(null, img)
     }
+
+    if (img.isStream()) {
+      return callback(new PluginError(PLUGIN_NAME, 'Streaming not supported'))
+    }
+
+    if (typeof cb !== 'function') {
+      return callback(
+        new PluginError(PLUGIN_NAME, `Argument '${cb}' is not a function`)
+      )
+    }
+
+    ;(async () => {
+      try {
+        const data = await processImg(img, cb)
+        img.contents = Buffer.from(data)
+        callback(null, img)
+      } catch (err) {
+        callback(new PluginError(PLUGIN_NAME, err))
+      }
+    })()
   })
 }
 
