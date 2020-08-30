@@ -8,10 +8,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "npm run lint && mocha",
-    "pretest": "rollup -c",
-    "build": "rimraf index.es.js && npm test",
-    "lint": "prettier-standard --lint '**/*.js'",
+    "test": "mocha",
+    "pretest": "rollup -c && npm run format",
+    "build": "rimraf dist && npm test",
     "format": "prettier-standard --format"
   },
   "repository": {
