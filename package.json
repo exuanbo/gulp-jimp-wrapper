@@ -2,8 +2,8 @@
   "name": "gulp-jimp-wrapper",
   "version": "1.0.0",
   "description": "Manipulates images using Jimp.",
-  "main": "index.js",
-  "module": "index.es.js",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
   "directories": {
     "test": "test"
   },
