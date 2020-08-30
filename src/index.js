@@ -43,7 +43,7 @@ const jimpWrapper = cb => {
 
       if (typeof cb !== 'function') {
         return callback(
-          new PluginError(PLUGIN_NAME, `Argument ${cb} is not a function`)
+          new PluginError(PLUGIN_NAME, `Argument '${cb}' is not a function`)
         )
       }
 
