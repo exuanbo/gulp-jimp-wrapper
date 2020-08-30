@@ -23,12 +23,14 @@ const jimp = require('gulp-jimp-wrapper')
 
 task('jimp', () => {
   return src('img/*')
-    .pipe(jimp(image =>
-      image
-        .resize(256, 256)
-        .quality(60)
-        .greyscale()
-    ))
+    .pipe(
+      jimp(image =>
+        image
+          .resize(256, 256)
+          .quality(60)
+          .greyscale()
+      )
+    )
     .pipe(dest('dist/img'))
 })
 ```
