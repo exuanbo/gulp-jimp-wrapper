@@ -2,7 +2,7 @@
 
 const fs = require('fs')
 const path = require('path')
-const should = require('chai').should()
+const expect = require('chai').expect
 const Vinyl = require('vinyl')
 const jimp = require('..')
 
@@ -17,18 +17,15 @@ const getFile = file => {
 
 const compare = (stream, fixtureName, expectedName, done, expectedErr) => {
   stream.on('error', err => {
-    if (expectedErr) should.equal(err.message, expectedErr)
+    if (expectedErr) expect(err.message).to.equal(expectedErr)
     done()
   })
-
   stream.on('data', file => {
-    should.equal(
-      file.contents.toString('base64'),
+    expect(file.contents.toString('base64')).to.equal(
       getFile(expectedName).contents.toString('base64')
     )
     done()
   })
-
   stream.write(getFile(fixtureName))
   stream.end()
 }
@@ -49,7 +46,7 @@ describe('gulp-jimp-wrapper', () => {
       'original.jpg',
       'invert.jpg',
       done,
-      'Argument img => img.invert() is not a function'
+      `Argument 'img => img.invert()' is not a function`
     )
   })
 })
