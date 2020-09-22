@@ -46,6 +46,6 @@
     "prettier-standard": "16.4.1",
     "rimraf": "3.0.2",
     "rollup": "2.28.1",
-    "vinyl": "2.2.0"
+    "vinyl": "2.2.1"
   }
 }
