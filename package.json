@@ -9,8 +9,8 @@
   },
   "scripts": {
     "test": "mocha",
-    "pretest": "rollup -c && npm run format",
-    "build": "rm -rf dist && npm test",
+    "pretest": "npm run build",
+    "build": "rm -rf dist && rollup -c",
     "format": "prettier-standard --format"
   },
   "repository": {
