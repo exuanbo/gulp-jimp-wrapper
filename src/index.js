@@ -30,8 +30,8 @@ const processImg = (img, cb) =>
       .catch(err => reject(err))
   })
 
-const jimpWrapper = cb => {
-  return through.obj(async function (img, _, callback) {
+const jimpWrapper = cb =>
+  through.obj(async function (img, _, callback) {
     if (img.isNull()) {
       callback(null, img)
       return
@@ -59,6 +59,5 @@ const jimpWrapper = cb => {
 
     callback()
   })
-}
 
 module.exports = jimpWrapper
