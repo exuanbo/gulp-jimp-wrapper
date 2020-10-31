@@ -15,17 +15,25 @@ const getFile = file => {
   })
 }
 
+const toBase64 = contents => contents.toString('base64')
+
 const compare = (stream, fixtureName, expectedName, done, expectedErr) => {
   stream.on('error', err => {
-    if (expectedErr) expect(err.message).to.equal(expectedErr)
-    done()
+    if (expectedErr) {
+      expect(err.message).to.equal(expectedErr)
+      done()
+      return
+    }
+    done(err)
   })
+
   stream.on('data', file => {
-    expect(file.contents.toString('base64')).to.equal(
-      getFile(expectedName).contents.toString('base64')
+    expect(toBase64(file.contents)).to.equal(
+      toBase64(getFile(expectedName).contents)
     )
     done()
   })
+
   stream.write(getFile(fixtureName))
   stream.end()
 }
@@ -46,7 +54,7 @@ describe('gulp-jimp-wrapper', () => {
       'original.jpg',
       'invert.jpg',
       done,
-      `Argument 'img => img.invert()' is not a function`
+      `Argument \`img => img.invert()\` is not a function`
     )
   })
 })
