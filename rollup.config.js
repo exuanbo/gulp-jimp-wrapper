@@ -1,5 +1,5 @@
-const pkg = require('./package.json')
 const commonjs = require('@rollup/plugin-commonjs')
+const pkg = require('./package.json')
 
 export default {
   input: 'src/index.js',
