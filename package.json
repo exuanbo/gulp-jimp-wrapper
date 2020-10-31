@@ -35,9 +35,9 @@
   },
   "homepage": "https://github.com/exuanbo/gulp-jimp-wrapper#readme",
   "dependencies": {
-    "jimp": "^0.16.0",
-    "plugin-error": "^1.0.1",
-    "through2": "^4.0.2"
+    "jimp": "0.16.1",
+    "plugin-error": "1.0.1",
+    "through2": "4.0.2"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "16.0.0",
