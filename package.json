@@ -44,7 +44,7 @@
     "chai": "4.2.0",
     "mocha": "8.2.0",
     "prettier-standard": "16.4.1",
-    "rollup": "2.32.1",
+    "rollup": "2.33.0",
     "vinyl": "2.2.1"
   }
 }
