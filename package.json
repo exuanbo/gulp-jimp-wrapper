@@ -42,7 +42,7 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "16.0.0",
     "chai": "4.2.0",
-    "mocha": "8.2.0",
+    "mocha": "8.2.1",
     "prettier-standard": "16.4.1",
     "rollup": "2.33.1",
     "vinyl": "2.2.1"
