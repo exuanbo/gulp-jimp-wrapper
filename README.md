@@ -2,11 +2,10 @@
 
 > Manipulates images using [Jimp](https://www.npmjs.com/package/jimp).
 
-[![npm](https://img.shields.io/npm/v/gulp-jimp-wrapper.svg?style=flat-square)](https://www.npmjs.com/package/gulp-jimp-wrapper)
-[![Travis CI](https://img.shields.io/travis/com/exuanbo/gulp-jimp-wrapper/master.svg?style=flat-square)](https://travis-ci.com/github/exuanbo/gulp-jimp-wrapper)
-[![David](https://img.shields.io/david/exuanbo/gulp-jimp-wrapper.svg?style=flat-square)](https://david-dm.org/exuanbo/gulp-jimp-wrapper)
-
-This plugin is actively maintained with the help of [Renovate](https://github.com/marketplace/renovate).
+[![npm](https://img.shields.io/npm/v/gulp-jimp-wrapper?style=flat-square)](https://www.npmjs.com/package/gulp-jimp-wrapper)
+[![Travis CI](https://img.shields.io/travis/com/exuanbo/gulp-jimp-wrapper/master?style=flat-square)](https://travis-ci.com/github/exuanbo/gulp-jimp-wrapper)
+[![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/gulp-jimp-wrapper?style=flat-square)](https://libraries.io/npm/gulp-jimp-wrapper)
+[![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen?style=flat-square)](https://renovatebot.com/)
 
 ## Install
 
@@ -48,4 +47,4 @@ By now this plugin does not support changing file name or file extention of the 
 
 ## License
 
-[MIT License](https://github.com/exuanbo/ts-standardx/blob/main/LICENSE) © 2020 [Exuanbo](https://github.com/exuanbo)
+[MIT License](https://github.com/exuanbo/gulp-jimp-wrapper/blob/master/LICENSE) © 2020 [Exuanbo](https://github.com/exuanbo)
