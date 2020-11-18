@@ -4,7 +4,7 @@ const pkg = require('./package.json')
 export default {
   input: 'src/index.js',
   plugins: [commonjs()],
-  external: ['path', ...Object.keys(pkg.dependencies)],
+  external: [...Object.keys(pkg.dependencies)],
   output: [
     {
       file: pkg.main,

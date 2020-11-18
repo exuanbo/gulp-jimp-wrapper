@@ -2,18 +2,40 @@
 
 const fs = require('fs')
 const path = require('path')
-const expect = require('chai').expect
+const { expect } = require('chai')
 const Vinyl = require('vinyl')
 const jimp = require('..')
 
-const toBase64 = contents => contents.toString('base64')
+const handleError = (err, done, expectedErr) => {
+  if (expectedErr) {
+    try {
+      expect(err.message).to.equal(expectedErr)
+    } catch (assertionError) {
+      done(assertionError)
+      return
+    }
+    done()
+    return
+  }
+  done(err)
+}
 
-const getFile = file => {
-  if (typeof file !== 'string') {
-    return new Vinyl({ contents: file })
+const handleData = (file, done, cb) => {
+  try {
+    cb(file)
+  } catch (assertionError) {
+    done(assertionError)
+    return
+  }
+  done()
+}
+
+const getFile = filename => {
+  if (typeof filename !== 'string') {
+    return new Vinyl({ contents: filename })
   }
 
-  const filePath = path.join(__dirname, 'img', file)
+  const filePath = path.join(__dirname, 'img', filename)
   return new Vinyl({
     base: path.dirname(filePath),
     path: filePath,
@@ -21,42 +43,50 @@ const getFile = file => {
   })
 }
 
-const compare = (stream, fixtureName, expectedName, done, expectedErr) => {
-  stream.on('error', err => {
-    if (expectedErr) {
-      try {
-        expect(err.message).to.equal(expectedErr)
-      } catch (assertionError) {
-        done(assertionError)
+const toBase64 = contents => contents.toString('base64')
+
+const compareContent = (
+  stream,
+  fixtureName,
+  expectedName,
+  done,
+  expectedErr
+) => {
+  stream.on('error', err => handleError(err, done, expectedErr))
+
+  stream.on('data', file =>
+    handleData(file, done, file => {
+      const { contents } = file
+      const expectedContents = getFile(expectedName).contents
+      if (!expectedContents) {
+        expect(contents).to.equal(expectedContents)
         return
       }
-      done()
-      return
-    }
-    done(err)
-  })
-
-  stream.on('data', file => {
-    const { contents } = file
-    const expectedContents = getFile(expectedName).contents
-
-    if (expectedContents === null) {
-      expect(contents).to.equal(expectedContents)
-      done()
-      return
-    }
-
-    expect(toBase64(contents)).to.equal(toBase64(expectedContents))
-    done()
-  })
+      expect(toBase64(contents)).to.equal(toBase64(expectedContents))
+    })
+  )
 
   stream.write(getFile(fixtureName))
   stream.end()
 }
 
+const compareFilename = (stream, expectedName, done, expectedErr) => {
+  stream.on('error', err => handleError(err, done, expectedErr))
+
+  stream.on('data', file =>
+    handleData(file, done, file => {
+      const [stem, extname] = expectedName.split('.')
+      expect(file.stem).to.equal(stem)
+    })
+  )
+
+  stream.write(getFile('original.jpg'))
+  stream.end()
+}
+
 describe('gulp-jimp-wrapper', () => {
   it('should callback in advance if file is null', done => {
-    compare(
+    compareContent(
       jimp(img => img.invert()),
       null,
       null,
@@ -64,8 +94,43 @@ describe('gulp-jimp-wrapper', () => {
     )
   })
 
+  it('should just work', done => {
+    compareContent(
+      jimp(img => img.invert()),
+      'original.jpg',
+      'invert.jpg',
+      done
+    )
+  })
+
+  it('should rename with basename', done => {
+    compareFilename(
+      jimp(img => img.invert(), { basename: 'invert' }),
+      'invert.jpg',
+      done
+    )
+  })
+
+  it('should rename with extname', done => {
+    compareFilename(
+      jimp(img => img.invert(), { extname: '.png' }),
+      'original.png',
+      done
+    )
+  })
+
+  it('should rename with both basename and extname', done => {
+    compareFilename(
+      jimp(img => img.invert(), { basename: 'invert', extname: '.png' }),
+      'invert.png',
+      done
+    )
+  })
+})
+
+describe('handle error', () => {
   it('should throw an error if file is stream', done => {
-    compare(
+    compareContent(
       jimp(img => img.invert()),
       fs.createReadStream(path.join(__dirname, 'img', 'original.jpg')),
       null,
@@ -75,7 +140,7 @@ describe('gulp-jimp-wrapper', () => {
   })
 
   it('should throw an error if argument is illegal', done => {
-    compare(
+    compareContent(
       jimp('img => img.invert()'),
       'original.jpg',
       null,
@@ -84,17 +149,8 @@ describe('gulp-jimp-wrapper', () => {
     )
   })
 
-  it('should just work', done => {
-    compare(
-      jimp(img => img.invert()),
-      'original.jpg',
-      'invert.jpg',
-      done
-    )
-  })
-
   it('throws an error if callback does not return a Jimp instance', done => {
-    compare(
+    compareContent(
       jimp(img => {
         img.invert()
       }),
@@ -106,7 +162,7 @@ describe('gulp-jimp-wrapper', () => {
   })
 
   it('should throw an meaningful error if Jimp fails', done => {
-    compare(
+    compareContent(
       jimp(img => img.no_such_method()),
       'original.jpg',
       'invert.jpg',
