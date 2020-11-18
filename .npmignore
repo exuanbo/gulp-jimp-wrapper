@@ -1,4 +1,4 @@
 .github/
 rollup.config.js
 src/
-test/img/
+__tests__/img/
