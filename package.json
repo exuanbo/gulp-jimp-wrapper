@@ -12,7 +12,7 @@
     "lint:fix": "ts-standardx --fix",
     "clean": "rimraf dist",
     "build": "npm run clean && rollup -c",
-    "test": "npx nyc@latest --exclude=dist --reporter=lcov --reporter=text-summary mocha __tests__",
+    "test": "npx nyc@latest --include=src --reporter=lcov --reporter=text-summary mocha __tests__",
     "pretest": "npm run build && npm run lint"
   },
   "repository": {
