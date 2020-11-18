@@ -176,7 +176,7 @@ describe('handle error', () => {
       'original.jpg',
       null,
       done,
-      'Jimp instance must be returned from your callback.'
+      'Jimp instance must be returned from the callback argument.'
     )
   })
 

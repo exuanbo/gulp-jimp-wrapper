@@ -21,7 +21,9 @@ const getMIMEType = img => MIME_TYPES[img.extname.slice(1).toLowerCase()]
 const processImage = async (img, cb, MIMEType) => {
   const res = await jimp.read(img.contents).then(cb)
   if (!(res instanceof jimp)) {
-    throw new Error('Jimp instance must be returned from your callback.')
+    throw new Error(
+      'Jimp instance must be returned from the callback argument.'
+    )
   }
   return res.getBufferAsync(MIMEType)
 }
