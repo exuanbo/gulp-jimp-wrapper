@@ -1,5 +1,5 @@
 const { src, dest } = require('gulp')
-const jimp = require('..')
+const jimp = require('../src/index')
 
 exports.default = () =>
   src('./img/original.jpg')

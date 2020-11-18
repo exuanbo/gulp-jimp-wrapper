@@ -4,7 +4,7 @@ const fs = require('fs')
 const path = require('path')
 const { expect } = require('chai')
 const Vinyl = require('vinyl')
-const jimp = require('..')
+const jimp = require('../src/index')
 
 const handleError = (err, done, expectedErr) => {
   if (expectedErr) {
