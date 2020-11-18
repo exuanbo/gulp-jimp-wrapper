@@ -77,6 +77,7 @@ const compareFilename = (stream, expectedName, done, expectedErr) => {
     handleData(file, done, file => {
       const [stem, extname] = expectedName.split('.')
       expect(file.stem).to.equal(stem)
+      expect(file.extname.slice(1)).to.equal(extname)
     })
   )
 
