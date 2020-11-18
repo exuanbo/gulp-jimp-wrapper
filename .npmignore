@@ -1,4 +1,6 @@
 .github/
+.nyc_output
+coverage/
 rollup.config.js
 src/
 __tests__/img/

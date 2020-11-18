@@ -5,15 +5,15 @@
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "directories": {
-    "test": "test"
+    "test": "__tests__"
   },
   "scripts": {
     "lint": "ts-standardx",
     "lint:fix": "ts-standardx --fix",
     "clean": "rimraf dist",
     "build": "npm run clean && rollup -c",
-    "test": "npm run lint && mocha __tests__",
-    "pretest": "npm run build"
+    "test": "npx nyc@latest --exclude=dist --reporter=lcov --reporter=text-summary mocha __tests__",
+    "pretest": "npm run build && npm run lint"
   },
   "repository": {
     "type": "git",
