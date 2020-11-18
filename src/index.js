@@ -17,16 +17,14 @@ const SUPPORTED_MIME_TYPES = {
 
 const pluginError = msg => new PluginError(PLUGIN_NAME, msg)
 
-const processImage = async (img, cb, callback) => {
-  const extension = path.extname(img.path).split('.').pop()
-
+const processImage = async (img, cb) => {
   const res = await jimp.read(img.contents).then(cb)
   if (!(res instanceof jimp)) {
-    callback(pluginError('Jimp instance must be returned from your callback.'))
-    return
+    throw pluginError('Jimp instance must be returned from your callback.')
   }
 
-  return res.getBufferAsync(SUPPORTED_MIME_TYPES[extension])
+  const ext = path.extname(img.path).split('.').pop()
+  return res.getBufferAsync(SUPPORTED_MIME_TYPES[ext])
 }
 
 const gulpJimp = cb =>
@@ -47,7 +45,7 @@ const gulpJimp = cb =>
     }
 
     try {
-      const data = await processImage(img, cb, callback)
+      const data = await processImage(img, cb)
       img.contents = Buffer.from(data)
       this.push(img)
     } catch (err) {
