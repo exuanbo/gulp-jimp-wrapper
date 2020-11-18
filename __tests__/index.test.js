@@ -75,8 +75,8 @@ const compareFilename = (stream, expectedName, done, expectedErr) => {
 
   stream.on('data', file =>
     handleData(file, done, file => {
-      const [stem, extname] = expectedName.split('.')
-      expect(file.stem).to.equal(stem)
+      expect(file.basename).to.equal(expectedName)
+      const extname = expectedName.split('.').pop()
       expect(file.extname.slice(1)).to.equal(extname)
     })
   )
@@ -87,12 +87,7 @@ const compareFilename = (stream, expectedName, done, expectedErr) => {
 
 describe('gulp-jimp-wrapper', () => {
   it('should callback in advance if file is null', done => {
-    compareContent(
-      jimp(img => img.invert()),
-      null,
-      null,
-      done
-    )
+    compareContent(jimp(), null, null, done)
   })
 
   it('should just work', done => {
@@ -112,10 +107,26 @@ describe('gulp-jimp-wrapper', () => {
     )
   })
 
+  it('should rename with basename with dot', done => {
+    compareFilename(
+      jimp(img => img.invert(), { basename: 'invert.new' }),
+      'invert.new.jpg',
+      done
+    )
+  })
+
   it('should rename with extname', done => {
     compareFilename(
       jimp(img => img.invert(), { extname: '.png' }),
       'original.png',
+      done
+    )
+  })
+
+  it('should rename with extname with dot', done => {
+    compareFilename(
+      jimp(img => img.invert(), { extname: '.new.png' }),
+      'original.new.png',
       done
     )
   })
@@ -140,7 +151,7 @@ describe('gulp-jimp-wrapper', () => {
 describe('handle error', () => {
   it('should throw an error if file is stream', done => {
     compareContent(
-      jimp(img => img.invert()),
+      jimp(),
       fs.createReadStream(path.join(__dirname, 'img', 'original.jpg')),
       null,
       done,
@@ -149,9 +160,8 @@ describe('handle error', () => {
   })
 
   it('should throw an error if argument is illegal', done => {
-    compareContent(
+    compareFilename(
       jimp('img => img.invert()'),
-      'original.jpg',
       null,
       done,
       "Argument 'img => img.invert()' is not a function."
@@ -164,16 +174,15 @@ describe('handle error', () => {
         img.invert()
       }),
       'original.jpg',
-      'invert.jpg',
+      null,
       done,
       'Jimp instance must be returned from your callback.'
     )
   })
 
   it('should throw an error if provided extname is not supported', done => {
-    compareContent(
-      jimp(img => img.invert(), { extname: '.webp' }),
-      'original.jpg',
+    compareFilename(
+      jimp(() => null, { extname: '.webp' }),
       null,
       done,
       "MIME type 'webp' is not supported."
@@ -184,7 +193,7 @@ describe('handle error', () => {
     compareContent(
       jimp(img => img.no_such_method()),
       'original.jpg',
-      'invert.jpg',
+      null,
       done,
       'img.no_such_method is not a function'
     )
