@@ -6,13 +6,13 @@ const PluginError = require('plugin-error')
 const jimp = require('jimp')
 
 const PLUGIN_NAME = 'gulp-jimp-wrapper'
-const SUPPORTED_MIME_TYPES = {
-  jpeg: 'image/jpeg',
-  jpg: 'image/jpeg',
-  png: 'image/png',
-  bmp: 'image/bmp',
-  tiff: 'image/tiff',
-  gif: 'image/gif'
+const MIME_TYPES = {
+  jpeg: jimp.MIME_JPEG,
+  jpg: jimp.MIME_JPEG,
+  png: jimp.MIME_PNG,
+  bmp: jimp.MIME_BMP,
+  tiff: jimp.MIME_TIFF,
+  gif: jimp.MIME_GIF
 }
 
 const pluginError = msg => new PluginError(PLUGIN_NAME, msg)
@@ -24,7 +24,7 @@ const processImage = async (img, cb) => {
   }
 
   const ext = path.extname(img.path).slice(1)
-  return res.getBufferAsync(SUPPORTED_MIME_TYPES[ext])
+  return res.getBufferAsync(MIME_TYPES[ext])
 }
 
 const gulpJimp = cb =>
