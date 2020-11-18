@@ -39,7 +39,7 @@ const compare = (stream, fixtureName, expectedName, done, expectedErr) => {
 }
 
 describe('gulp-jimp-wrapper', () => {
-  it('works for me', done => {
+  it('should just work', done => {
     compare(
       jimp(img => img.invert()),
       'original.jpg',
@@ -48,13 +48,25 @@ describe('gulp-jimp-wrapper', () => {
     )
   })
 
-  it('throws an error', done => {
+  it('should throw an error if argument is illegal', done => {
     compare(
       jimp('img => img.invert()'),
       'original.jpg',
       'invert.jpg',
       done,
-      `Argument \`img => img.invert()\` is not a function`
+      "Argument 'img => img.invert()' is not a function."
+    )
+  })
+
+  it('throws an error if callback does not return a Jimp instance', done => {
+    compare(
+      jimp(img => {
+        img.invert()
+      }),
+      'original.jpg',
+      'invert.jpg',
+      done,
+      'Jimp instance must be returned from your callback.'
     )
   })
 })

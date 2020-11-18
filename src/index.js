@@ -15,19 +15,21 @@ const SUPPORTED_MIME_TYPES = {
   gif: 'image/gif'
 }
 
-const processImg = (img, cb) =>
-  new Promise((resolve, reject) => {
-    const extension = path.extname(img.path).split('.').pop()
+const pluginError = msg => new PluginError(PLUGIN_NAME, msg)
 
-    jimp
-      .read(img.contents)
-      .then(cb)
-      .then(img => img.getBufferAsync(SUPPORTED_MIME_TYPES[extension]))
-      .then(data => resolve(data))
-      .catch(err => reject(err))
-  })
+const processImage = async (img, cb, callback) => {
+  const extension = path.extname(img.path).split('.').pop()
 
-const jimpWrapper = cb =>
+  const res = await jimp.read(img.contents).then(cb)
+  if (!(res instanceof jimp)) {
+    callback(pluginError('Jimp instance must be returned from your callback.'))
+    return
+  }
+
+  return res.getBufferAsync(SUPPORTED_MIME_TYPES[extension])
+}
+
+const gulpJimp = cb =>
   through.obj(async function (img, _, callback) {
     if (img.isNull()) {
       callback(null, img)
@@ -35,26 +37,24 @@ const jimpWrapper = cb =>
     }
 
     if (img.isStream()) {
-      callback(new PluginError(PLUGIN_NAME, 'Streaming not supported'))
+      callback(pluginError('Streaming not supported.'))
       return
     }
 
     if (typeof cb !== 'function') {
-      callback(
-        new PluginError(PLUGIN_NAME, `Argument \`${cb}\` is not a function`)
-      )
+      callback(pluginError(`Argument '${cb}' is not a function.`))
       return
     }
 
     try {
-      const data = await processImg(img, cb)
+      const data = await processImage(img, cb, callback)
       img.contents = Buffer.from(data)
       this.push(img)
     } catch (err) {
-      this.emit('error', new PluginError(PLUGIN_NAME, err))
+      this.emit('error', pluginError(err.message))
     }
 
     callback()
   })
 
-module.exports = jimpWrapper
+module.exports = gulpJimp
