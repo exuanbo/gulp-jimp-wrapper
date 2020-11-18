@@ -50,12 +50,32 @@ const compare = (stream, fixtureName, expectedName, done, expectedErr) => {
 }
 
 describe('gulp-jimp-wrapper', () => {
-  it('should callback in advance if img is null', done => {
+  it('should callback in advance if file is null', done => {
     compare(
       jimp(img => img.invert()),
       null,
       null,
       done
+    )
+  })
+
+  it('should throw an error if file is stream', done => {
+    compare(
+      jimp(img => img.invert()),
+      fs.createReadStream(path.join(__dirname, 'img', 'original.jpg')),
+      null,
+      done,
+      'Streaming not supported.'
+    )
+  })
+
+  it('should throw an error if argument is illegal', done => {
+    compare(
+      jimp('img => img.invert()'),
+      null,
+      null,
+      done,
+      "Argument 'img => img.invert()' is not a function."
     )
   })
 
@@ -65,16 +85,6 @@ describe('gulp-jimp-wrapper', () => {
       'original.jpg',
       'invert.jpg',
       done
-    )
-  })
-
-  it('should throw an error if argument is illegal', done => {
-    compare(
-      jimp('img => img.invert()'),
-      'original.jpg',
-      'invert.jpg',
-      done,
-      "Argument 'img => img.invert()' is not a function."
     )
   })
 
