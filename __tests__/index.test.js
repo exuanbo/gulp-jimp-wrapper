@@ -120,6 +120,14 @@ describe('gulp-jimp-wrapper', () => {
     )
   })
 
+  it('should rename with extname without dot', done => {
+    compareFilename(
+      jimp(img => img.invert(), { extname: 'png' }),
+      'original.png',
+      done
+    )
+  })
+
   it('should rename with both basename and extname', done => {
     compareFilename(
       jimp(img => img.invert(), { basename: 'invert', extname: '.png' }),
@@ -150,7 +158,7 @@ describe('handle error', () => {
     )
   })
 
-  it('throws an error if callback does not return a Jimp instance', done => {
+  it('should throw an error if callback does not return a Jimp instance', done => {
     compareContent(
       jimp(img => {
         img.invert()
@@ -159,6 +167,16 @@ describe('handle error', () => {
       'invert.jpg',
       done,
       'Jimp instance must be returned from your callback.'
+    )
+  })
+
+  it('should throw an error if provided extname is not supported', done => {
+    compareContent(
+      jimp(img => img.invert(), { extname: '.webp' }),
+      'original.jpg',
+      null,
+      done,
+      "MIME type 'webp' is not supported."
     )
   })
 
