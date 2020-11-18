@@ -8,10 +8,12 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha",
-    "pretest": "npm run build",
-    "build": "rm -rf dist && rollup -c",
-    "format": "prettier-standard --format"
+    "lint": "ts-standardx",
+    "lint:fix": "ts-standardx --fix",
+    "clean": "rimraf dist",
+    "build": "npm run clean && rollup -c",
+    "test": "npm run lint && mocha __tests__",
+    "pretest": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -43,8 +45,9 @@
     "@rollup/plugin-commonjs": "16.0.0",
     "chai": "4.2.0",
     "mocha": "8.2.1",
-    "prettier-standard": "16.4.1",
+    "rimraf": "3.0.2",
     "rollup": "2.33.3",
+    "ts-standardx": "0.4.1",
     "vinyl": "2.2.1"
   }
 }
