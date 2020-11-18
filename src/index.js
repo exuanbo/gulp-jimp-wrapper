@@ -23,7 +23,7 @@ const processImage = async (img, cb) => {
     throw pluginError('Jimp instance must be returned from your callback.')
   }
 
-  const ext = path.extname(img.path).split('.').pop()
+  const ext = path.extname(img.path).slice(1)
   return res.getBufferAsync(SUPPORTED_MIME_TYPES[ext])
 }
 
