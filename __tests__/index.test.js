@@ -99,4 +99,14 @@ describe('gulp-jimp-wrapper', () => {
       'Jimp instance must be returned from your callback.'
     )
   })
+
+  it('should throw an meaningful error if Jimp fails', done => {
+    compare(
+      jimp(img => img.no_such_method()),
+      'original.jpg',
+      'invert.jpg',
+      done,
+      'img.no_such_method is not a function'
+    )
+  })
 })
