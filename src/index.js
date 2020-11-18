@@ -52,7 +52,7 @@ const gulpJimp = (cb, { basename, extname } = {}) =>
 
       const MIMEType = getMIMEType(img)
       if (!MIMEType) {
-        throw new Error(`MIME type '${MIMEType}' is not supported.`)
+        throw new Error(`MIME type '${extname.slice(1)}' is not supported.`)
       }
 
       const data = await processImage(img, cb, MIMEType)
