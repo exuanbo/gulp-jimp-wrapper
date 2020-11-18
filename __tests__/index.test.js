@@ -72,7 +72,7 @@ describe('gulp-jimp-wrapper', () => {
   it('should throw an error if argument is illegal', done => {
     compare(
       jimp('img => img.invert()'),
-      null,
+      'original.jpg',
       null,
       done,
       "Argument 'img => img.invert()' is not a function."
