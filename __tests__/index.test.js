@@ -6,7 +6,13 @@ const expect = require('chai').expect
 const Vinyl = require('vinyl')
 const jimp = require('..')
 
+const toBase64 = contents => contents.toString('base64')
+
 const getFile = file => {
+  if (typeof file !== 'string') {
+    return new Vinyl({ contents: file })
+  }
+
   const filePath = path.join(__dirname, 'img', file)
   return new Vinyl({
     base: path.dirname(filePath),
@@ -14,8 +20,6 @@ const getFile = file => {
     contents: fs.readFileSync(filePath)
   })
 }
-
-const toBase64 = contents => contents.toString('base64')
 
 const compare = (stream, fixtureName, expectedName, done, expectedErr) => {
   stream.on('error', err => {
@@ -28,9 +32,16 @@ const compare = (stream, fixtureName, expectedName, done, expectedErr) => {
   })
 
   stream.on('data', file => {
-    expect(toBase64(file.contents)).to.equal(
-      toBase64(getFile(expectedName).contents)
-    )
+    const { contents } = file
+    const expectedContents = getFile(expectedName).contents
+
+    if (expectedContents === null) {
+      expect(contents).to.equal(expectedContents)
+      done()
+      return
+    }
+
+    expect(toBase64(contents)).to.equal(toBase64(expectedContents))
     done()
   })
 
@@ -39,6 +50,15 @@ const compare = (stream, fixtureName, expectedName, done, expectedErr) => {
 }
 
 describe('gulp-jimp-wrapper', () => {
+  it('should callback in advance if img is null', done => {
+    compare(
+      jimp(img => img.invert()),
+      null,
+      null,
+      done
+    )
+  })
+
   it('should just work', done => {
     compare(
       jimp(img => img.invert()),
