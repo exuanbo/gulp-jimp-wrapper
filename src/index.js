@@ -20,7 +20,7 @@ const pluginError = msg => new PluginError(PLUGIN_NAME, msg)
 const processImage = async (img, cb) => {
   const res = await jimp.read(img.contents).then(cb)
   if (!(res instanceof jimp)) {
-    throw pluginError('Jimp instance must be returned from your callback.')
+    throw new Error('Jimp instance must be returned from your callback.')
   }
 
   const ext = path.extname(img.path).slice(1)
@@ -28,7 +28,7 @@ const processImage = async (img, cb) => {
 }
 
 const gulpJimp = cb =>
-  through.obj(async function (img, _, callback) {
+  through.obj(async (img, _, callback) => {
     if (img.isNull()) {
       callback(null, img)
       return
@@ -47,12 +47,10 @@ const gulpJimp = cb =>
     try {
       const data = await processImage(img, cb)
       img.contents = Buffer.from(data)
-      this.push(img)
+      callback(null, img)
     } catch (err) {
-      this.emit('error', pluginError(err.message))
+      callback(pluginError(err.message))
     }
-
-    callback()
   })
 
 module.exports = gulpJimp
