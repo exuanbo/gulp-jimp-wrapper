@@ -24,7 +24,12 @@ const getFile = file => {
 const compare = (stream, fixtureName, expectedName, done, expectedErr) => {
   stream.on('error', err => {
     if (expectedErr) {
-      expect(err.message).to.equal(expectedErr)
+      try {
+        expect(err.message).to.equal(expectedErr)
+      } catch (assertionError) {
+        done(assertionError)
+        return
+      }
       done()
       return
     }
