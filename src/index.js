@@ -35,7 +35,7 @@ const gulpJimp = cb =>
     }
 
     if (img.isStream()) {
-      callback(pluginError('Streaming not supported.'))
+      callback(pluginError('Stream is not supported.'))
       return
     }
 

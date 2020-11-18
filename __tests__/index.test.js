@@ -70,7 +70,7 @@ describe('gulp-jimp-wrapper', () => {
       fs.createReadStream(path.join(__dirname, 'img', 'original.jpg')),
       null,
       done,
-      'Streaming not supported.'
+      'Stream is not supported.'
     )
   })
 
