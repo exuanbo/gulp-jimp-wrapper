@@ -3,10 +3,7 @@ const { mergeObj } = require('standard-engine-ts')
 
 module.exports = mergeObj(baseConfig, {
   env: {
+    es2021: true,
     mocha: true
-  },
-  parser: 'espree',
-  parserOptions: {
-    ecmaVersion: 12
   }
 })
