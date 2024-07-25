@@ -44,7 +44,7 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "16.0.0",
     "chai": "4.2.0",
-    "gulp": "4.0.2",
+    "gulp": "5.0.0",
     "mocha": "8.2.1",
     "rimraf": "3.0.2",
     "rollup": "2.37.1",
